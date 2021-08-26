@@ -21,12 +21,24 @@ var taskFormHandler = function(event) {
   document.querySelector("input[name='task-name']").value = "";
   document.querySelector("select[name='task-type']").selectedIndex = 0;
 
-  var taskDataObj = {
-    name: taskNameInput,
-    type: taskTypeInput
-  };
+  var isEdit = formEl.hasAttribute("data-task-id");
+  
+  // has data attribute, so get task id and call function to complete edit process
+  if (isEdit) {
+    var taskId = formEl.getAttribute("data-task-id");
+    completeEditTask(taskNameInput, taskTypeInput, taskId);
+  } 
+    // no data attribute, so create object as normal and pass to createTaskEl function
+    else {
+    var taskDataObj = {
+      name: taskNameInput,
+      type: taskTypeInput
+    };
 
-  createTaskEl(taskDataObj);
+    createTaskEl(taskDataObj);
+  }
+
+  
 };
 
 var createTaskEl = function(taskDataObj) {
@@ -96,6 +108,16 @@ var createTaskActions = function(taskId) {
   return actionContainerEl;
 
 };
+
+var completeEditTask = function(taskName, taskType, taskId) {
+  console.log(taskName, taskType, taskId);
+};
+
+
+
+
+
+
 var taskButtonHandler = function(event) {
   // get target element from event
   var targetEl = event.target;
