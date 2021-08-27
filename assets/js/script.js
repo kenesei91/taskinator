@@ -1,3 +1,4 @@
+var tasks = [];
 var taskIdCounter = 0;
 
 var formEl = document.querySelector("#task-form");
@@ -34,7 +35,8 @@ var taskFormHandler = function(event) {
     else {
     var taskDataObj = {
       name: taskNameInput,
-      type: taskTypeInput
+      type: taskTypeInput,
+      status: "to do"
     };
 
     createTaskEl(taskDataObj);
@@ -54,12 +56,18 @@ var createTaskEl = function(taskDataObj) {
   var taskInfoEl = document.createElement("div");
   taskInfoEl.className = "task-info";
   taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
+
+  tasks.push(taskDataObj);
+
   listItemEl.appendChild(taskInfoEl);
 
   var taskActionsEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionsEl);
   // add list item to list
   tasksToDoEl.appendChild(listItemEl);
+
+  console.log(taskDataObj);
+  console.log(taskDataObj.status);
   
 
   //console.dir(listItemEl);
@@ -115,6 +123,13 @@ var completeEditTask = function(taskName, taskType, taskId) {
   // find the matching task list item
   var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
 
+  // loop through tasks array and task object with new content
+  for (var i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].name = taskName;
+      tasks[i].type = taskType;
+    }
+  };
   // set new values
   taskSelected.querySelector("h3.task-name").textContent = taskName;
   taskSelected.querySelector("span.task-type").textContent = taskType;
@@ -166,6 +181,15 @@ var taskStatusChangeHandler = function(event) {
   else if (statusValue === "completed") {
     tasksCompletedEl.appendChild(taskSelected);
   }
+
+  // update task's in tasks array
+  for (var i = 0; i < tasks.length; i++) {
+  if (tasks[i].id === parseInt(taskId)) {
+    tasks[i].status = statusValue;
+    console.log(tsaks);
+  }
+  
+}
 
 };
 
